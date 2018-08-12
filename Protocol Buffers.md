@@ -3,14 +3,15 @@
   <div class="content"> 
    <h3>Protocol Buffers（<a href="https://www.charlesproxy.com/documentation/using-charles/protocol-buffers/">原文链接</a>）</h3> 
    <h4>背景</h4> 
-   <p>To quote from the&nbsp;<a href="https://developers.google.com/protocol-buffers/">Protocol Buffers website</a>:</p> 
+   <p>引自<a href="https://developers.google.com/protocol-buffers/">Protocol Buffers官网</a>：</p> 
    <blockquote> 
-    <p>Protocol buffers are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data – think XML, but smaller, faster, and simpler. You define how you want your data to be structured once, then you can use special generated source code to easily write and read your structured data to and from a variety of data streams and using a variety of languages – Java, C++, or Python.</p> 
+    <p>Protocol buffers是一种由谷歌提供的，用于序列化和反序列化数据的解决方案。它的特点是语言中立，平台中立，且对比于XML，体积更小，速度更快，使用更简单。你只需将你的数据结构声明一次，就可以使用生成的特定源码，来读写你来自各种数据流和语言的结构化数据。</p> 
    </blockquote> 
-   <p>The Protocol Buffers serialised format is a binary encoded format that is not easily human readable. As Protocol Buffers messages are commonly exchanged over HTTP we have added full support for viewing and editing Protocol Buffers messages in a human readable way.</p> 
-   <p>Charles currently supports version 2.4.1 of Protocol Buffers, which is largely backwards compatible with earlier versions.</p> 
-   <h4>Overview</h4> 
-   <p>Charles identifies that an HTTP request or response contains a Protocol Buffers message when the&nbsp;<code>Content-Type</code>&nbsp;header has a MIME type of<code>application/x-protobuf</code>&nbsp;or&nbsp;<code>application/x-google-protobuf</code>. Two new HTTP body content viewers become available when viewing the content, the&nbsp;<a href="#text_viewer">Protobuf Text Viewer</a>&nbsp;and the&nbsp;<a href="#structured_viewer">Protobuf Structured Viewer</a>.</p> 
+   <p>Protocol Buffers的序列化格式是一个二进制编码的格式，并不容易被人类阅读。鉴于Protocol Buffers的信息通常都是获取自HTTP，我们添加了完整的便于人阅读和编辑的Protocol Buffers编辑工具。</p> 
+   <p>Charles当前支持2.4.1版本的Protocol Buffers，并且可以支持大量更早版本的Protocol Buffers。</p> 
+   <h4>概述</h4> 
+   <p>Charles会检查，当一个HTTP请求或响应的header的<code>Content-Type</code>中有<code>application/x-protobuf</code>或<code>application/x-google-protobuf</code>的MIME类型时，这个请求就含有Protocol Buffers的信息。这时你就可以看到两个新的内容视图<a href="#text_viewer">Protobuf Text Viewer</a>及<a href="#structured_viewer">Protobuf Structured Viewer</a>。
+   </p> 
    <p>In order for these viewers to be able to display the message content they need access to the protocol buffers descriptor for the message(s) that are contained in the HTTP body content. Charles looks for&nbsp;<code>desc</code>&nbsp;and&nbsp;<code>messageType</code>&nbsp;parameters in the content-type to discover the location of the&nbsp;<em>FileDescriptorSet</em>&nbsp;(<code>*.desc</code>&nbsp;file) and fully qualified message type name, it then uses these to retrieve and load the appropriate descriptor for the message(s). A protocol buffers FileDescriptorSet can be generated from a&nbsp;<code>*.proto</code>&nbsp;file by the protocol buffers compiler (protoc) by using the&nbsp;<code>-o</code>&nbsp;or&nbsp;<code>--descriptor_set_out</code>&nbsp;option e.g.&nbsp;<code>protoc -oModel.desc Model.proto</code>.</p> 
    <p>Finally the HTTP body content may contain a single message or a list of messages which have been serialised using the standard protocol buffers length delimited format. To determine whether the HTTP body contains a single message or a delimited list of messages an optional<code>delimited</code>&nbsp;parameter in the content-type is looked for. This must be present and have the value&nbsp;<code>true</code>&nbsp;to indicate a delimited list of messages has been sent. When a delimited list of messages has been sent all messages must be of the same message type.</p> 
    <p>This means a complete&nbsp;<code>Content-Type</code>&nbsp;header will look like:<code>Content-Type: application/x-protobuf; desc=&quot;http://localhost/Model.desc&quot;; messageType=&quot;com.xk72.sample.PurchaseOrder&quot;; delimited=true</code></p> 
