@@ -1,8 +1,8 @@
 <html>
  <body>
   <div class="content"> 
-   <h3>Protocol Buffers</h3> 
-   <h4>Background</h4> 
+   <h3>Protocol Buffers（<a href="https://www.charlesproxy.com/documentation/using-charles/protocol-buffers/">原文链接</a>）</h3> 
+   <h4>背景</h4> 
    <p>To quote from the&nbsp;<a href="https://developers.google.com/protocol-buffers/">Protocol Buffers website</a>:</p> 
    <blockquote> 
     <p>Protocol buffers are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data – think XML, but smaller, faster, and simpler. You define how you want your data to be structured once, then you can use special generated source code to easily write and read your structured data to and from a variety of data streams and using a variety of languages – Java, C++, or Python.</p> 
